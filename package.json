@@ -1,0 +1,7 @@
+{
+  "name": "strategize",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "YesSeri <henrik.zenkert@gmail.com>",
+  "license": "MIT"
+}
