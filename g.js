@@ -27,9 +27,9 @@ class Player {
 }
 
 class Point {
-    constructor(y, x) {
-        this.y = y;
+    constructor(x, y) {
         this.x = x;
+        this.y = y;
     }
 }
 class Piece {
@@ -69,7 +69,7 @@ class Game {
         if (player.color === colorEnum.RED && point.y < 6) throw new Error("Can't place red here")
         const { x, y } = point
         if (player.piecesToPlace[piece] > 0) {
-            this.board[y][x] = new Piece(player.color, piece)
+            this.board[y][x] = piece
             player.piecesToPlace[piece] -= 1;
         }
     }
@@ -77,8 +77,10 @@ class Game {
         if (player.color === colorEnum.BLUE) {
             for (let y = 0; y < 4; y++) {
                 for (let x = 0; x < 10; x++) {
-                    if (this.board[y][x].color === colorEnum.EMPTY){
-                        console.log(this.board[y][x])
+                    if (this.board[y][x].color === colorEnum.EMPTY) {
+                        const piece = this.getRandomPiece(this.p1)
+                        this.place(piece, new Point(x, y), player);
+                        debugger;
                     }
                 }
             }
@@ -87,9 +89,18 @@ class Game {
         }
 
     }
-    getRandomPiece(){
-        
-
+    getRandomPiece(player) {
+        const pieceArray = player.piecesToPlace.map((el, i) => {
+            // console.log({el, i})
+            let arr = [];
+            for (let j = 0; j < el; j++) {
+                arr.push(i);
+            }
+            return arr
+        }).flat();
+        const randomArrValue = pieceArray[Math.floor(Math.random() * pieceArray.length)];
+        const randomPiece = new Piece(player.color, randomArrValue)
+        return randomPiece;
     }
     print() {
         let i = 0;
@@ -110,7 +121,6 @@ function piecesToPlace() {
 }
 
 const game = new Game();
-game.place(pieceValueEnum.general, new Point(0, 5), game.p1)
-// game.place(pieceValueEnum.captain, new Point(1, 1), game.p1)
 // game.print();
 game.randomizePlacement(game.p1);
+game.print();
